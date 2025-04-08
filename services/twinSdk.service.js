@@ -11,11 +11,19 @@ export class TwinService {
       accessKey: process.env.TP_ACCESS_KEY,
       secretKey: process.env.TP_SECRET_KEY,
       clientId: process.env.TP_CLIENT_ID,
+      baseUrl: process.env.TP_BASE_URL,
+      wsUrl: process.env.TP_WS_URL,
     });
   }
 
   validateEnvironmentVariables() {
-    const requiredEnvVars = ["TP_ACCESS_KEY", "TP_SECRET_KEY", "TP_CLIENT_ID"];
+    const requiredEnvVars = [
+      "TP_ACCESS_KEY",
+      "TP_SECRET_KEY",
+      "TP_CLIENT_ID",
+      "TP_BASE_URL",
+      "TP_WS_URL",
+    ];
 
     for (const envVar of requiredEnvVars) {
       if (!process.env[envVar]) {
@@ -55,7 +63,17 @@ export class TwinService {
       console.log("response from sdk", sdkResponse);
       return sdkResponse;
     } catch (error) {
-      console.error("Detailed error uploading media file:", error);
+      console.error(" error uploading media file:", error);
+      throw error;
+    }
+  }
+
+  async twinVideoResponse(input, twinId) {
+    try {
+      const response = await this.twinProtocol.twinVideoResponse(input, twinId);
+      return response;
+    } catch (error) {
+      console.error("error getting twin video response", error);
       throw error;
     }
   }

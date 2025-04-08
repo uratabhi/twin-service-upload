@@ -39,3 +39,20 @@ export const uploadData = async (req, res) => {
     });
   }
 };
+
+export const twinVideoResponse = async (req, res, next) => {
+  const { input, twinId } = req.body;
+  try {
+    const result = await twinService.twinVideoResponse(input, twinId);
+    res.status(200).json({
+      success: true,
+      message: "twin video response received succesfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "error getting video response",
+      error: error.message || "Unknonw error",
+    });
+  }
+};
